@@ -1,4 +1,5 @@
 import 'package:recipe_app/models/Recipe.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
   final String? id;
