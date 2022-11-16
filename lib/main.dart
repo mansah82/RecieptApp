@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:recipe_app/Login_widget.dart';
 import 'package:recipe_app/auth_page.dart';
+import 'package:recipe_app/colors.dart';
 import 'package:recipe_app/home_page.dart';
 import 'package:recipe_app/utils.dart';
 import 'package:recipe_app/verify_email_page.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
           filled: true,
           fillColor: Color.fromARGB(39, 255, 255, 255),
         ),
-        primarySwatch: Colors.primaryWhite,
+        primarySwatch: MyColors.primaryWhite,
       ),
       home: const MyHomePage(),
     );
