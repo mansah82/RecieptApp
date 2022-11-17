@@ -1,8 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:recipe_app/main.dart';
 import 'package:recipe_app/utils.dart';
 
@@ -130,7 +129,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 style: ButtonStyle(
                   elevation: MaterialStateProperty.all<double>(0),
                   backgroundColor: MaterialStateProperty.all(
-                    Color.fromARGB(40, 255, 255, 255),
+                    const Color.fromARGB(40, 255, 255, 255),
                   ),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
@@ -165,7 +164,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Center(child: CircularProgressIndicator()));
+        builder: (context) => const Center(child: CircularProgressIndicator()));
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),

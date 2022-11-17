@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
+
 import 'package:recipe_app/forgot_password_page.dart';
-import 'package:recipe_app/home_page.dart';
+
 import 'package:recipe_app/main.dart';
 import 'package:recipe_app/utils.dart';
 
 class LoginWidget extends StatefulWidget {
   final VoidCallback onClickedSignUp;
-  const LoginWidget({required this.onClickedSignUp});
+  const LoginWidget({super.key, required this.onClickedSignUp});
 
   @override
   State<LoginWidget> createState() => _LoginWidgetState();
@@ -131,7 +131,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               style: ButtonStyle(
                 elevation: MaterialStateProperty.all<double>(0),
                 backgroundColor: MaterialStateProperty.all(
-                  Color.fromARGB(82, 255, 255, 255),
+                  const Color.fromARGB(82, 255, 255, 255),
                 ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -166,7 +166,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     fontSize: 17),
               ),
               onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ForgotPasswordPage())),
+                  builder: (context) => const ForgotPasswordPage())),
             ),
           ),
         ]),
@@ -178,7 +178,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Center(child: CircularProgressIndicator()));
+        builder: (context) => const Center(child: CircularProgressIndicator()));
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),

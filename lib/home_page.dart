@@ -5,6 +5,8 @@ import 'package:recipe_app/favorite.dart';
 import 'package:recipe_app/home.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -77,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                   color: Color.fromARGB(255, 237, 57, 87)),
               title: "More")
         ],
-        backgroundColor: Color.fromARGB(255, 237, 57, 87),
+        backgroundColor: const Color.fromARGB(255, 237, 57, 87),
         initialActiveIndex: selectedPage,
         onTap: (int index) {
           setState(() {

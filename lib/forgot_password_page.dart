@@ -1,8 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:recipe_app/main.dart';
 import 'package:recipe_app/utils.dart';
 
@@ -38,10 +37,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.white, //change your color here
           ),
-          title: Text(
+          title: const Text(
             "Reset Password",
             style: TextStyle(color: Colors.white),
           ),

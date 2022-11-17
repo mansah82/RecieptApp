@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:recipe_app/Login_widget.dart';
 import 'package:recipe_app/auth_page.dart';
 import 'package:recipe_app/colors.dart';
-import 'package:recipe_app/home_page.dart';
 import 'package:recipe_app/utils.dart';
 import 'package:recipe_app/verify_email_page.dart';
 import 'firebase_options.dart';
@@ -76,9 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
         } else if (snapshot.hasError) {
           return const Center(child: Text('Something went wrong!'));
         } else if (snapshot.hasData) {
-          return VerifyEmailPage();
+          return const VerifyEmailPage();
         } else {
-          return AuthPage();
+          return const AuthPage();
         }
       }),
     )
