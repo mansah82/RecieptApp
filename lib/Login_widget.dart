@@ -62,7 +62,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 }
                 return null;
               },
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
               controller: emailController,
               textInputAction: TextInputAction.next,
               //initialValue: globals.name,
@@ -84,7 +84,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 }
                 return null;
               },
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
               controller: passwordController,
               textInputAction: TextInputAction.next,
               //initialValue: globals.name,

@@ -1,8 +1,9 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe_app/favorite.dart';
-import 'package:recipe_app/home.dart';
+
+import 'package:recipe_app/navbarpages/favorite_page.dart';
+import 'package:recipe_app/navbarpages/my_recipe_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,10 +15,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _pageNo = [
     const Favorite(),
-    const Home(),
-    const Home(),
+    const MyRecipe(),
+    const MyRecipe(),
     const Favorite(),
-    const Home()
+    const MyRecipe()
   ];
   int selectedPage = 2;
 
@@ -61,7 +62,7 @@ class _HomePageState extends State<HomePage> {
               ),
               activeIcon: ImageIcon(AssetImage("assets/icons/list.png"),
                   color: Color.fromARGB(255, 237, 57, 87)),
-              title: "My Recept"),
+              title: "My Recipe"),
           TabItem(
               icon: ImageIcon(
                 AssetImage("assets/icons/fave.png"),
