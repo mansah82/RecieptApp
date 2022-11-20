@@ -192,7 +192,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         name: "",
         email: emailController.text,
         favorites: [],
-        myRecipe: [],
+        //tar bort extra listan
       );
       print(
           "---------------------------------------------------------------------");

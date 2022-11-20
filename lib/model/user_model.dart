@@ -5,14 +5,14 @@ class UserModel {
   final String name;
   final String email;
   final List<Recipe> favorites;
-  final List<Recipe> myRecipe;
+ 
 
   UserModel(
       {required this.uid,
       required this.name,
       required this.email,
       required this.favorites,
-      required this.myRecipe});
+      });
 
   Map<String, dynamic> toMap() {
     return {
@@ -20,7 +20,7 @@ class UserModel {
       'name': name,
       'email': email,
       'favorites': favorites,
-      'myRecipe': myRecipe,
+      
     };
   }
 
@@ -30,7 +30,7 @@ class UserModel {
       uid: map['uid'] ?? '',
       email: map['email'] ?? '',
       favorites: List<Recipe>.from(map['favorites']),
-      myRecipe: List<Recipe>.from(map['myRecipe']),
+     
     );
   }
 }
