@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:recipe_app/main.dart';
-import 'package:recipe_app/model/user_model.dart';
+import 'package:recipe_app/models/user_model.dart';
 import 'package:recipe_app/utils.dart';
 
 class SignUpWidget extends StatefulWidget {

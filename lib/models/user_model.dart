@@ -1,18 +1,17 @@
-import 'package:recipe_app/model/recipe.dart';
+import 'package:recipe_app/models/recipe.dart';
 
 class UserModel {
   final String uid;
   final String name;
   final String email;
   final List<Recipe> favorites;
- 
 
-  UserModel(
-      {required this.uid,
-      required this.name,
-      required this.email,
-      required this.favorites,
-      });
+  UserModel({
+    required this.uid,
+    required this.name,
+    required this.email,
+    required this.favorites,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -20,7 +19,6 @@ class UserModel {
       'name': name,
       'email': email,
       'favorites': favorites,
-      
     };
   }
 
@@ -30,7 +28,6 @@ class UserModel {
       uid: map['uid'] ?? '',
       email: map['email'] ?? '',
       favorites: List<Recipe>.from(map['favorites']),
-     
     );
   }
 }
