@@ -12,3 +12,11 @@ class Utils {
       ..showSnackBar(snackBar);
   }
 }
+
+void showSnackBar2({required BuildContext context, required String content}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(content),
+    ),
+  );
+}
