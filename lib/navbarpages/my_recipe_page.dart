@@ -98,9 +98,10 @@ class _MyRecipeState extends State<MyRecipe> {
 }
 
 class MyButton extends StatefulWidget {
+  final auth = FirebaseAuth.instance.currentUser!.uid;
   final Recipe recipe;
 
-  const MyButton({
+  MyButton({
     Key? key,
     required this.recipe,
   }) : super(key: key);
@@ -119,7 +120,7 @@ class MyButton extends StatefulWidget {
     );
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(auth)
         .collection('favorite')
         .doc(recipe.id)
         .set(myRecipe.toMap());
@@ -132,9 +133,11 @@ class MyButton extends StatefulWidget {
 class _MyButtonState extends State<MyButton> {
   // Default to non pressed
   bool pressAttention = false;
+  bool isAlreadyFavorite = false;
 
   @override
   Widget build(BuildContext context) {
+    print(widget.recipe.id);
     return Container(
       color: const Color.fromARGB(255, 239, 127, 107),
       child: Column(
@@ -184,7 +187,7 @@ class _MyButtonState extends State<MyButton> {
                     },
                     icon: ImageIcon(
                       const AssetImage("assets/icons/fav.png"),
-                      color: pressAttention
+                      color: (pressAttention)
                           ? const Color.fromARGB(255, 243, 99, 135)
                           : const Color.fromARGB(255, 249, 245, 246),
                       //Color.fromARGB(255, 239, 61, 100),

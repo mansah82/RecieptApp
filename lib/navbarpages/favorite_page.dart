@@ -93,26 +93,6 @@ class MyButton extends StatefulWidget {
     required this.recipe,
   }) : super(key: key);
 
-  void _saveRecipeToUserSubcollection({
-    required Recipe recipe,
-  }) async {
-    final myRecipe = Recipe(
-      id: recipe.id,
-      image: recipe.image,
-      createdBy: recipe.createdBy,
-      name: recipe.name,
-      description: recipe.description,
-      ingredients: recipe.ingredients,
-      labels: recipe.labels,
-    );
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('favorite')
-        .doc(recipe.id)
-        .set(myRecipe.toMap());
-  }
-
   void _deleteDoc({
     required Recipe recipe,
   }) async {
