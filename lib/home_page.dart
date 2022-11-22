@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:recipe_app/filter.dart';
 import 'package:recipe_app/main.dart';
 import 'dart:io' show Platform;
+import 'package:recipe_app/models/recipe.dart';
+import 'package:recipe_app/DetailPage.dart';
 
 import 'package:recipe_app/navbarpages/favorite_page.dart';
 import 'package:recipe_app/navbarpages/my_recipe_page.dart';
