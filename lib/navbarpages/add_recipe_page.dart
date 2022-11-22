@@ -84,14 +84,14 @@ class _AddRecipePageState extends State<AddRecipePage> {
     try {
       var uuid = const Uuid();
       print('$uuid string uuid');
-      var uid = FirebaseAuth.instance.currentUser!.uid;
+      var uid = FirebaseAuth.instance.currentUser!.email;
       final docUser =
           FirebaseFirestore.instance.collection('recipes').doc(uuid.v1());
 
       final recipe = Recipe(
         id: uuid.v1(),
         image: urlDownload,
-        createdBy: uid,
+        createdBy: uid!,
         name: nameController.text,
         description: descriptionController.text,
         ingredients: data,
@@ -122,7 +122,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
       listDynamic = [];
     }
     setState(() {});
-    if (listDynamic.length >= 5) {
+    if (listDynamic.length >= 15) {
       return;
     }
     listDynamic.add(DynamicWidget());
@@ -136,7 +136,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
       listDynamic = [];
     }
     setState(() {});
-    if (listLabelDynamic.length >= 5) {
+    if (listLabelDynamic.length >= 10) {
       return;
     }
     listLabelDynamic.add(DynamicLabelWidget());
