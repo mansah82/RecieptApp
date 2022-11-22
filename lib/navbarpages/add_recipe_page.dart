@@ -122,7 +122,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
       listDynamic = [];
     }
     setState(() {});
-    if (listDynamic.length >= 5) {
+    if (listDynamic.length >= 15) {
       return;
     }
     listDynamic.add(DynamicWidget());
@@ -136,7 +136,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
       listDynamic = [];
     }
     setState(() {});
-    if (listLabelDynamic.length >= 5) {
+    if (listLabelDynamic.length >= 10) {
       return;
     }
     listLabelDynamic.add(DynamicLabelWidget());
