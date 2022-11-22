@@ -71,7 +71,9 @@ class _MyRecipeState extends State<MyRecipe> {
                       children: List<Widget>.generate(
                           recipesList.length, // same length as the data
                           (index) {
-                        return MyButton(recipe: recipesList[index]);
+                        return MyButton(
+                          recipe: recipesList[index],
+                        );
                         //gridViewTile(recipesList, index);
                       }),
                     );
@@ -93,66 +95,6 @@ class _MyRecipeState extends State<MyRecipe> {
       ),
     );
   }
-
-  Container gridViewTile(List<Recipe> recipesList, int index) {
-    return Container(
-      color: const Color.fromARGB(255, 239, 127, 107),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-            child: CircleAvatar(
-              //=> wight strok
-              radius: 75,
-              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-              child: CircleAvatar(
-                radius: 72,
-                backgroundImage: NetworkImage(recipesList[index].image!),
-
-                // NetworkImage(
-                //   '${firebaseUser["addressImage"]}'),
-              ),
-            ),
-          ),
-          Text(
-            recipesList[index].name,
-            maxLines: 2,
-            overflow: TextOverflow.fade,
-            style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
-                child: SizedBox(
-                  height: 40,
-                  width: 40,
-                  child: IconButton(
-                    onPressed: () => setState(() {
-                      tappedIndex = index;
-                    }),
-                    icon: ImageIcon(
-                      AssetImage("assets/icons/fav.png"),
-                      color: tappedIndex == index
-                          ? Color.fromARGB(255, 249, 245, 246)
-                          : Color.fromARGB(255, 243, 99, 135),
-                      //Color.fromARGB(255, 239, 61, 100),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          )
-        ],
-      ), // Use the fullName property of each item
-    );
-  }
 }
 
 class MyButton extends StatefulWidget {
@@ -162,6 +104,26 @@ class MyButton extends StatefulWidget {
     Key? key,
     required this.recipe,
   }) : super(key: key);
+
+  void _saveRecipeToUserSubcollection({
+    required Recipe recipe,
+  }) async {
+    final myRecipe = Recipe(
+      id: recipe.id,
+      image: recipe.image,
+      createdBy: recipe.createdBy,
+      name: recipe.name,
+      description: recipe.description,
+      ingredients: recipe.ingredients,
+      labels: recipe.labels,
+    );
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('favorite')
+        .doc(recipe.id)
+        .set(myRecipe.toMap());
+  }
 
   @override
   State<MyButton> createState() => _MyButtonState();
@@ -178,15 +140,16 @@ class _MyButtonState extends State<MyButton> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
             child: CircleAvatar(
               //=> wight strok
               radius: 75,
-              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+              backgroundColor: Color.fromARGB(255, 255, 255, 255),
               child: CircleAvatar(
                 radius: 72,
-                backgroundImage: NetworkImage(widget.recipe.image!),
+                backgroundImage: NetworkImage(
+                    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
 
                 // NetworkImage(
                 //   '${firebaseUser["addressImage"]}'),
@@ -215,13 +178,15 @@ class _MyButtonState extends State<MyButton> {
                     onPressed: () {
                       setState(() {
                         pressAttention = !pressAttention;
+                        widget._saveRecipeToUserSubcollection(
+                            recipe: widget.recipe);
                       });
                     },
                     icon: ImageIcon(
-                      AssetImage("assets/icons/fav.png"),
+                      const AssetImage("assets/icons/fav.png"),
                       color: pressAttention
-                          ? Color.fromARGB(255, 249, 245, 246)
-                          : Color.fromARGB(255, 243, 99, 135),
+                          ? const Color.fromARGB(255, 243, 99, 135)
+                          : const Color.fromARGB(255, 249, 245, 246),
                       //Color.fromARGB(255, 239, 61, 100),
                     ),
                   ),
