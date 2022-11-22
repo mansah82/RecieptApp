@@ -357,7 +357,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         const Text(
-                          "ingridents",
+                          "Ingredients",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -376,7 +376,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                     height: 200,
                     child: Column(
                       children: <Widget>[
-                        const Text("labels",
+                        const Text("Special Diets",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
@@ -422,7 +422,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       backgroundColor: const Color.fromARGB(
                                           255, 245, 196, 206)),
                                   child: const Text(
-                                    'Add ingrident',
+                                    'Add Ingredient',
                                     style: TextStyle(
                                       color: Color.fromARGB(255, 239, 61, 100),
                                     ),
@@ -454,7 +454,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                         backgroundColor: const Color.fromARGB(
                                             255, 245, 196, 206)),
                                     child: const Text(
-                                      'Add Label',
+                                      'Add Diet',
                                       style: TextStyle(
                                         color:
                                             Color.fromARGB(255, 239, 61, 100),
