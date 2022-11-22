@@ -2,29 +2,76 @@ import 'package:filter_list/filter_list.dart';
 import 'package:flutter/material.dart';
 
 class FilterPage extends StatelessWidget {
-  const FilterPage({Key? key}) : super(key: key);
+  FilterPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Filter your search"),
+        titleTextStyle: const TextStyle(color: Colors.white),
+        backgroundColor: const Color.fromARGB(255, 247, 88, 88),
+      ),
       body: SafeArea(
         child: FilterListWidget<String>(
+          themeData: FilterListThemeData(context),
           listData: const [
             "Lactos Free",
             "Gluten Free",
             "Raw food",
             "Vegetarian",
+            "Chicken",
+            "Asian",
+            "European",
+            "American",
+            "Beef",
+            "Soup",
+            "Fish",
+            "Tacos",
+            "Noodles",
+            "Sushi",
+            "Pie",
+            "Pasta",
+            "Italian",
+            "Japanese",
+            "Sausage",
+            "Swedish",
+            "Kebab",
+            "Healthy",
+            "Fast",
+            "Cheap",
+            "Expensive",
+            "Lunch",
+            "Dinner",
+            "Breakfast",
+            "Dessert",
+            "Fine dine",
+            "English",
+            "Vietnamese",
+            "Chinese",
+            "BBQ",
+            "Mexican",
+            "Burrito",
+            "Burger",
+            "Pizza",
+            "French",
+            "Fried rice",
+            "Ribs",
+            "Fried",
+            "Salad",
+            "Appertizer",
+            "Lasagne",
           ],
           selectedListData: const [],
           onApplyButtonClick: (list) {
             Navigator.pop(context, list);
+            // ignore: avoid_print
+            print(list);
           },
           choiceChipLabel: (item) {
-            /// Used to print text on chip
             return item;
           },
           validateSelectedItem: (list, val) {
-            ///  identify if item is selected or not
             return list!.contains(val);
           },
           onItemSearch: (text, query) {
