@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:recipe_app/models/Recipe.dart';
+import 'package:recipe_app/models/recipe.dart';
 
 class DetailPage extends StatefulWidget {
   final Recipe recipe;
