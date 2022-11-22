@@ -1,5 +1,6 @@
 import 'package:filter_list/filter_list.dart';
 import 'package:flutter/material.dart';
+import 'filterListClass.dart';
 
 class FilterPage extends StatelessWidget {
   FilterPage({Key? key}) : super(key: key);
@@ -61,12 +62,15 @@ class FilterPage extends StatelessWidget {
             "Salad",
             "Appertizer",
             "Lasagne",
+            "Protein"
           ],
           selectedListData: const [],
           onApplyButtonClick: (list) {
+            FilterList.FilterlistArray.clear();
             Navigator.pop(context, list);
+            FilterList.FilterlistArray = List.from(list!);
             // ignore: avoid_print
-            print(list);
+            print(FilterList.FilterlistArray);
           },
           choiceChipLabel: (item) {
             return item;

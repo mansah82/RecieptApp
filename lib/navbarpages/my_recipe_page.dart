@@ -58,6 +58,7 @@ class _MyRecipeState extends State<MyRecipe> {
                     final double itemHeight =
                         (size.height - kToolbarHeight - 10) / 3;
                     final double itemWidth = size.width / 2;
+                    print(snapshot2);
 
                     return GridView(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
