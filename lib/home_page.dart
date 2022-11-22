@@ -28,11 +28,54 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.email!),
+        backgroundColor: Color.fromARGB(255, 247, 88, 88),
+        title: Text(
+          "Recipe App",
+          style: TextStyle(color: Colors.white),
+        ),
         actions: [
           IconButton(
-              onPressed: () => FirebaseAuth.instance.signOut(),
-              icon: const Icon(Icons.logout))
+              onPressed: () => null,
+              icon: GestureDetector(
+                child: PopupMenuButton<int>(
+                  elevation: 2,
+                  color: Color.fromARGB(173, 251, 251, 251),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: 1,
+                      child: Center(
+                        child: Text(
+                          "Sign Out",
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 248, 74, 74),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                  initialValue: 0,
+                  onSelected: (value) {
+                    print("clik shod");
+                    switch (value) {
+                      case 1:
+                        {
+                          FirebaseAuth.instance.signOut();
+                          break;
+                        }
+                    }
+                  },
+                  child: const Icon(
+                    Icons.more_vert,
+                    color: Colors.white,
+                    size: 26,
+                  ),
+                ),
+              ))
         ],
       ),
       body: _pageNo[selectedPage],
@@ -45,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                 color: Color.fromARGB(255, 255, 255, 255),
               ),
               activeIcon: ImageIcon(AssetImage("assets/icons/home.png"),
-                  color: Color.fromARGB(255, 237, 57, 87)),
+                  color: Color.fromARGB(255, 247, 88, 88)),
               title: "Home"),
           TabItem(
               icon: ImageIcon(
@@ -53,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                 color: Color.fromARGB(255, 255, 255, 255),
               ),
               activeIcon: ImageIcon(AssetImage("assets/icons/trending.png"),
-                  color: Color.fromARGB(255, 237, 57, 87)),
+                  color: Color.fromARGB(255, 247, 88, 88)),
               title: "trending"),
           TabItem(
               icon: ImageIcon(
@@ -61,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                 color: Color.fromARGB(255, 255, 255, 255),
               ),
               activeIcon: ImageIcon(AssetImage("assets/icons/list.png"),
-                  color: Color.fromARGB(255, 237, 57, 87)),
+                  color: Color.fromARGB(255, 247, 88, 88)),
               title: "My Recipe"),
           TabItem(
               icon: ImageIcon(
@@ -69,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                 color: Color.fromARGB(255, 255, 255, 255),
               ),
               activeIcon: ImageIcon(AssetImage("assets/icons/fave.png"),
-                  color: Color.fromARGB(255, 237, 57, 87)),
+                  color: Color.fromARGB(255, 247, 88, 88)),
               title: "favorite"),
           TabItem(
               icon: ImageIcon(
@@ -77,10 +120,10 @@ class _HomePageState extends State<HomePage> {
                 color: Color.fromARGB(255, 255, 255, 255),
               ),
               activeIcon: ImageIcon(AssetImage("assets/icons/more.png"),
-                  color: Color.fromARGB(255, 237, 57, 87)),
+                  color: Color.fromARGB(255, 247, 88, 88)),
               title: "More")
         ],
-        backgroundColor: const Color.fromARGB(255, 237, 57, 87),
+        backgroundColor: Color.fromARGB(255, 247, 88, 88),
         initialActiveIndex: selectedPage,
         onTap: (int index) {
           setState(() {

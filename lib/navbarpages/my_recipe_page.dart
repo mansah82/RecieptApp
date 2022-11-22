@@ -11,7 +11,7 @@ class MyRecipe extends StatelessWidget {
         child: Column(),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromARGB(255, 237, 57, 87),
+        backgroundColor: Color.fromARGB(255, 247, 88, 88),
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => AddRecipePage()));
