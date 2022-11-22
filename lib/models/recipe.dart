@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 
 class Recipe {
   final String? id;
-  final String? image;
+  final String image;
   final String createdBy;
   final String name;
   final String description;
