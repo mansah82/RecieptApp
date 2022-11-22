@@ -1,8 +1,10 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:recipe_app/main.dart';
+import 'package:recipe_app/models/user_model.dart';
 import 'package:recipe_app/utils.dart';
 
 class SignUpWidget extends StatefulWidget {
@@ -55,7 +57,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     email != null && !EmailValidator.validate(email)
                         ? 'Enter a valid email'
                         : null,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.emailAddress,
                 controller: emailController,
                 textInputAction: TextInputAction.next,
                 //initialValue: globals.name,
@@ -72,14 +74,14 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
               child: TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
+                //autovalidateMode: AutovalidateMode.onUserInteraction,
                 style: const TextStyle(color: Colors.white),
                 obscureText: true,
 
                 validator: (value) => value != null && value.length < 6
                     ? 'Enter min 6 characters'
                     : null,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 controller: passwordController,
                 textInputAction: TextInputAction.next,
                 //initialValue: globals.name,
@@ -108,6 +110,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ),
                 onPressed: () {
                   signUp();
+                  //createUser(emailController.text);
                 },
                 child: const SizedBox(
                   height: 55,
@@ -166,15 +169,37 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         barrierDismissible: false,
         builder: (context) => const Center(child: CircularProgressIndicator()));
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          )
+          .then((_) => createUser(emailController.text));
     } on FirebaseAuthException catch (e) {
       print(e);
 
       Utils.showSnackBar(e.message);
     }
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
+  }
+
+  Future createUser(String email) async {
+    try {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      final docUser = FirebaseFirestore.instance.collection('users').doc(uid);
+      final user = UserModel(
+        uid: uid,
+        name: "",
+        email: emailController.text,
+        favorites: [],
+        //tar bort extra listan
+      );
+      print(
+          "---------------------------------------------------------------------");
+      final json = user.toMap();
+      await docUser.set(json);
+    } catch (e) {
+      showSnackBar2(context: context, content: e.toString());
+    }
   }
 }
