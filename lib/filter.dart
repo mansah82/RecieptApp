@@ -16,61 +16,15 @@ class FilterPage extends StatelessWidget {
       body: SafeArea(
         child: FilterListWidget<String>(
           themeData: FilterListThemeData(context),
-          listData: const [
-            "Lactos Free",
-            "Gluten Free",
-            "Raw food",
-            "Vegetarian",
-            "Chicken",
-            "Asian",
-            "European",
-            "American",
-            "Beef",
-            "Soup",
-            "Fish",
-            "Tacos",
-            "Noodles",
-            "Sushi",
-            "Pie",
-            "Pasta",
-            "Italian",
-            "Japanese",
-            "Sausage",
-            "Swedish",
-            "Kebab",
-            "Healthy",
-            "Fast",
-            "Cheap",
-            "Expensive",
-            "Lunch",
-            "Dinner",
-            "Breakfast",
-            "Dessert",
-            "Fine dine",
-            "English",
-            "Vietnamese",
-            "Chinese",
-            "BBQ",
-            "Mexican",
-            "Burrito",
-            "Burger",
-            "Pizza",
-            "French",
-            "Fried rice",
-            "Ribs",
-            "Fried",
-            "Salad",
-            "Appertizer",
-            "Lasagne",
-            "Protein"
-          ],
+          listData: const ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Brunch'],
           selectedListData: const [],
           onApplyButtonClick: (list) {
             FilterList.FilterlistArray.clear();
             Navigator.pop(context, list);
             FilterList.FilterlistArray = List.from(list!);
+
             // ignore: avoid_print
-            print(FilterList.FilterlistArray);
+            // print(FilterList.FilterlistArray);
           },
           choiceChipLabel: (item) {
             return item;
