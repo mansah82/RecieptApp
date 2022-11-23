@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+
   final auth = FirebaseAuth.instance.currentUser!.uid;
   void _saveRecipeToUserSubcollection({
     required Recipe recipe,
@@ -35,16 +37,18 @@ class _DetailPageState extends State<DetailPage> {
         .set(myRecipe.toMap());
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(widget.recipe.name),
         backgroundColor: const Color.fromARGB(255, 247, 88, 88),
         iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
           widget.recipe.name,
           style: TextStyle(color: Colors.white),
-        ),
+
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
@@ -54,7 +58,11 @@ class _DetailPageState extends State<DetailPage> {
               Stack(
                 children: <Widget>[
                   Image.network(
+
+                    widget.recipe.image,
+
                     'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
+
                     height: 250,
                     width: double.infinity,
                     fit: BoxFit.fitWidth,
@@ -73,6 +81,7 @@ class _DetailPageState extends State<DetailPage> {
                               color: Colors.black),
                         ),
                         onTap: () {
+
                           _saveRecipeToUserSubcollection(recipe: widget.recipe);
 
                           print('Favorited');

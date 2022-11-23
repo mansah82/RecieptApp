@@ -9,15 +9,25 @@ import 'package:recipe_app/models/user_model.dart';
 import 'package:recipe_app/navbarpages/add_recipe_page.dart';
 import 'package:recipe_app/filterListClass.dart';
 
-class GridPage extends StatefulWidget {
-  const GridPage({super.key});
+class AllRecipes extends StatefulWidget {
+  const AllRecipes({super.key});
 
   @override
-  State<GridPage> createState() => _MyGridState();
+  State<AllRecipes> createState() => _MyRecipesState();
 }
 
-class _MyGridState extends State<GridPage> {
+class _MyRecipesState extends State<AllRecipes> {
   int? tappedIndex;
+  Stream<List<Recipe>>? fetchedRecipes;
+  List<Recipe>? tempList;
+  List<String> labelList = [
+    'Breakfast',
+    'Lunch',
+    'Dinner',
+    'Dessert',
+    'Brunch'
+  ];
+  String selectedLabel = '';
   Stream<List<Recipe>> getRecipesStream() {
     return FirebaseFirestore.instance
         .collection('recipes')
@@ -37,79 +47,108 @@ class _MyGridState extends State<GridPage> {
   void initState() {
     super.initState();
     tappedIndex = 0;
+    fetchedRecipes = getRecipesStream();
+    tempList = [];
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isFavorite = false;
     final currentUser = FirebaseAuth.instance.currentUser!.uid;
     final getUser = FirebaseFirestore.instance
         .collection('users')
         .doc(currentUser)
         .snapshots();
     return Scaffold(
-      body: StreamBuilder(
-          stream: getUser,
-          builder: (BuildContext context, AsyncSnapshot favoriteList) {
-            return StreamBuilder<List<Recipe>>(
-                stream: getRecipesStream(),
-                builder: (context, snapshot2) {
-                  if (favoriteList.hasData && snapshot2.hasData) {
-                    List<Recipe> recipesList = snapshot2.data!;
-                    late List<bool> pressedAttentions =
-                        recipesList.map((e) => false).toList();
-                    var size = MediaQuery.of(context).size;
-                    final double itemHeight =
-                        (size.height - kToolbarHeight - 10) / 3;
-                    final double itemWidth = size.width / 2;
-                    print(snapshot2);
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...labelList.map((label) => GestureDetector(
+                          child: Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: selectedLabel == label
+                                      ? Color.fromARGB(255, 219, 219, 219)
+                                      : Color.fromARGB(255, 247, 88, 88),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  label,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              if (selectedLabel == label) {
+                                selectedLabel = '';
+                              } else {
+                                selectedLabel = label;
+                              }
+                            });
+                          },
+                        ))
+                  ],
+                ),
+              ),
+            ),
+            StreamBuilder(
+                stream: getUser,
+                builder: (BuildContext context, AsyncSnapshot favoriteList) {
+                  return StreamBuilder<List<Recipe>>(
+                      stream: fetchedRecipes,
+                      builder: (context, snapshot2) {
+                        if (favoriteList.hasData && snapshot2.hasData) {
+                          List<Recipe> recipesList = snapshot2.data!;
+                          late List<bool> pressedAttentions =
+                              recipesList.map((e) => false).toList();
+                          var size = MediaQuery.of(context).size;
+                          final double itemHeight =
+                              (size.height - kToolbarHeight - 10) / 3;
+                          final double itemWidth = size.width / 2;
+                          print(snapshot2);
 
-                    return GridView(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: (itemWidth / itemHeight),
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                      ),
-                      primary: false,
-                      shrinkWrap: true,
-                      children: List<Widget>.generate(
-                          recipesList.length, // same length as the data
-                          (index) {
-                        //print(recipesList[index].labels);
-
-                        //Får filtreringen att fungera, renderingen fungerar inte.
-                        //Tror recipeList overridar filterList, om ni kollar logg
-                        //när man klickat i protein går in och ur sidan igen så
-                        //står till chili con carne under print(filteredList[0].name)
-                        if (FilterList.FilterlistArray.any((item) =>
-                            recipesList[index].labels.contains(item))) {
-                          List<Recipe> filteredList = [];
-                          print(filteredList.length);
-
-                          for (var recipe in recipesList) {
-                            if (FilterList.FilterlistArray.any(
-                                (element) => recipe.labels.contains(element))) {
-                              print(recipe.labels);
-                              filteredList.add(recipe);
-                            }
-                          }
-                          print(filteredList[0].name);
-
-                          if (filteredList.isNotEmpty) {
-                            return MyButton(recipe: filteredList[0]);
-                          }
+                          return GridView(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: (itemWidth / itemHeight),
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
+                            ),
+                            primary: false,
+                            shrinkWrap: true,
+                            children: selectedLabel == ''
+                                ? <Widget>[
+                                    ...recipesList.map(
+                                        (recipe) => MyButton(recipe: recipe))
+                                  ]
+                                : <Widget>[
+                                    ...recipesList
+                                        .where((recipe) => recipe.labels
+                                            .contains(selectedLabel))
+                                        .map((recipe) =>
+                                            MyButton(recipe: recipe))
+                                  ],
+                          );
                         }
-
-                        return MyButton(recipe: recipesList[index]);
-
-                        //gridViewTile(recipesList, index);
-                      }),
-                    );
-                  }
-                  return const Center(child: Text("check your connection"));
-                });
-          }),
+                        return const Center(
+                            child: Text("check your connection"));
+                      });
+                })
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 247, 88, 88),
         onPressed: () {
