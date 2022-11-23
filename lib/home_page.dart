@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_app/filter.dart';
 import 'package:recipe_app/main.dart';
+import 'package:recipe_app/models/recipe.dart';
+import 'package:recipe_app/DetailPage.dart';
 
 import 'package:recipe_app/navbarpages/GridPage.dart';
 
