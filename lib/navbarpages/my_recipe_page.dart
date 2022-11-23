@@ -14,6 +14,8 @@ class MyRecipe extends StatefulWidget {
 
 class _MyRecipeState extends State<MyRecipe> {
   int? tappedIndex;
+
+  final currentUser = FirebaseAuth.instance.currentUser!.uid;
   Stream<List<Recipe>> getRecipesStream() {
     return FirebaseFirestore.instance
         .collection('recipes')
@@ -21,8 +23,9 @@ class _MyRecipeState extends State<MyRecipe> {
         .map((event) {
       List<Recipe> recipes = [];
       for (var document in event.docs) {
-        recipes.add(Recipe.fromMap(document.data()));
-        print(recipes[0].ingredients);
+        if (Recipe.fromMap(document.data()).createdBy == currentUser) {
+          recipes.add(Recipe.fromMap(document.data()));
+        }
       }
 
       return recipes;
@@ -69,12 +72,9 @@ class _MyRecipeState extends State<MyRecipe> {
                       ),
                       primary: false,
                       shrinkWrap: true,
-                      children: List<Widget>.generate(
-                          recipesList.length, // same length as the data
-                          (index) {
-                        return MyButton(recipe: recipesList[index]);
-                        //gridViewTile(recipesList, index);
-                      }),
+                      children: <Widget>[
+                        ...recipesList.map((recipe) => MyButton(recipe: recipe))
+                      ],
                     );
                   }
                   return const Center(child: Text("check your connection"));
