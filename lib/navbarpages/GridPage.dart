@@ -1,21 +1,33 @@
+import 'dart:js_util';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe_app/filter.dart';
 import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/models/user_model.dart';
 import 'package:recipe_app/navbarpages/add_recipe_page.dart';
+import 'package:recipe_app/filterListClass.dart';
 
-class MyRecipe extends StatefulWidget {
-  const MyRecipe({super.key});
+class AllRecipes extends StatefulWidget {
+  const AllRecipes({super.key});
 
   @override
-  State<MyRecipe> createState() => _MyRecipeState();
+  State<AllRecipes> createState() => _MyRecipesState();
 }
 
-class _MyRecipeState extends State<MyRecipe> {
+class _MyRecipesState extends State<AllRecipes> {
   int? tappedIndex;
-
-  final currentUser = FirebaseAuth.instance.currentUser!.uid;
+  Stream<List<Recipe>>? fetchedRecipes;
+  List<Recipe>? tempList;
+  List<String> labelList = [
+    'Breakfast',
+    'Lunch',
+    'Dinner',
+    'Dessert',
+    'Brunch'
+  ];
+  String selectedLabel = '';
   Stream<List<Recipe>> getRecipesStream() {
     return FirebaseFirestore.instance
         .collection('recipes')
@@ -23,9 +35,8 @@ class _MyRecipeState extends State<MyRecipe> {
         .map((event) {
       List<Recipe> recipes = [];
       for (var document in event.docs) {
-        if (Recipe.fromMap(document.data()).createdBy == currentUser) {
-          recipes.add(Recipe.fromMap(document.data()));
-        }
+        recipes.add(Recipe.fromMap(document.data()));
+        print(recipes[0].ingredients);
       }
 
       return recipes;
@@ -36,59 +47,117 @@ class _MyRecipeState extends State<MyRecipe> {
   void initState() {
     super.initState();
     tappedIndex = 0;
+    fetchedRecipes = getRecipesStream();
+    tempList = [];
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isFavorite = false;
     final currentUser = FirebaseAuth.instance.currentUser!.uid;
     final getUser = FirebaseFirestore.instance
         .collection('users')
         .doc(currentUser)
         .snapshots();
     return Scaffold(
-      body: StreamBuilder(
-          stream: getUser,
-          builder: (BuildContext context, AsyncSnapshot favoriteList) {
-            return StreamBuilder<List<Recipe>>(
-                stream: getRecipesStream(),
-                builder: (context, snapshot2) {
-                  if (favoriteList.hasData && snapshot2.hasData) {
-                    List<Recipe> recipesList = snapshot2.data!;
-                    late List<bool> pressedAttentions =
-                        recipesList.map((e) => false).toList();
-                    var size = MediaQuery.of(context).size;
-                    final double itemHeight =
-                        (size.height - kToolbarHeight - 10) / 3;
-                    final double itemWidth = size.width / 2;
-                    print(snapshot2);
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...labelList.map((label) => GestureDetector(
+                          child: Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: selectedLabel == label
+                                      ? Color.fromARGB(255, 219, 219, 219)
+                                      : Color.fromARGB(255, 247, 88, 88),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  label,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              if (selectedLabel == label) {
+                                selectedLabel = '';
+                              } else {
+                                selectedLabel = label;
+                              }
+                            });
+                          },
+                        ))
+                  ],
+                ),
+              ),
+            ),
+            StreamBuilder(
+                stream: getUser,
+                builder: (BuildContext context, AsyncSnapshot favoriteList) {
+                  return StreamBuilder<List<Recipe>>(
+                      stream: fetchedRecipes,
+                      builder: (context, snapshot2) {
+                        if (favoriteList.hasData && snapshot2.hasData) {
+                          List<Recipe> recipesList = snapshot2.data!;
+                          late List<bool> pressedAttentions =
+                              recipesList.map((e) => false).toList();
+                          var size = MediaQuery.of(context).size;
+                          final double itemHeight =
+                              (size.height - kToolbarHeight - 10) / 3;
+                          final double itemWidth = size.width / 2;
+                          print(snapshot2);
 
-                    return GridView(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: (itemWidth / itemHeight),
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                      ),
-                      primary: false,
-                      shrinkWrap: true,
-                      children: <Widget>[
-                        ...recipesList.map((recipe) => MyButton(recipe: recipe))
-                      ],
-                    );
-                  }
-                  return const Center(child: Text("check your connection"));
-                });
-          }),
+                          return GridView(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: (itemWidth / itemHeight),
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
+                            ),
+                            primary: false,
+                            shrinkWrap: true,
+                            children: selectedLabel == ''
+                                ? <Widget>[
+                                    ...recipesList.map(
+                                        (recipe) => MyButton(recipe: recipe))
+                                  ]
+                                : <Widget>[
+                                    ...recipesList
+                                        .where((recipe) => recipe.labels
+                                            .contains(selectedLabel))
+                                        .map((recipe) =>
+                                            MyButton(recipe: recipe))
+                                  ],
+                          );
+                        }
+                        return const Center(
+                            child: Text("check your connection"));
+                      });
+                })
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 247, 88, 88),
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => AddRecipePage()));
+              .push(MaterialPageRoute(builder: (context) => FilterPage()));
         },
-        tooltip: 'Increment',
+        tooltip: 'Search',
         child: const Icon(
-          Icons.add,
+          Icons.search,
           color: Colors.white,
         ),
       ),
