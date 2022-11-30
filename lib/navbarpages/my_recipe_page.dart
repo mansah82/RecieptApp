@@ -211,7 +211,7 @@ class _MyButtonState extends State<MyButton> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
               child: CircleAvatar(
                 //=> wight strok
@@ -219,8 +219,7 @@ class _MyButtonState extends State<MyButton> {
                 backgroundColor: Color.fromARGB(255, 255, 255, 255),
                 child: CircleAvatar(
                   radius: 72,
-                  backgroundImage: NetworkImage(
-                      'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
+                  backgroundImage: NetworkImage(widget.recipe.image),
 
                   // NetworkImage(
                   //   '${firebaseUser["addressImage"]}'),
